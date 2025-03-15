@@ -56,14 +56,15 @@ async def create_checkin(request: Request):
 
         pizza_pref = list(filter(lambda a: a['question'] == 'What is your pizza preference?', content['answers']))
         if len(pizza_pref) == 0:
-            return "ok"
+            return Response(status_code=204)
 
-        d_reqs = list(filter(lambda a: a['question'] == 'Do you have any dietary restrictions?', content['answers']))
+        d_reqs = None
+        q_d_reqs = list(filter(lambda a: a['question'] == 'Do you have any dietary restrictions?', content['answers']))
+        if len(q_d_reqs) > 0:
+            d_reqs = q_d_reqs[0]['response']
+
         logger.info(f"Printing food token for {attendee_name}...")
-        if len(d_reqs) == 0:
-            printer.print_food(attendee_name, pizza_pref[0]['response'], str(group), None)
-        else:
-            printer.print_food(attendee_name, pizza_pref[0]['response'], str(group), d_reqs[0]['response'])
+        printer.print_food(attendee_name, pizza_pref[0]['response'], str(group), d_reqs)
 
         serial = serial + 1
         if serial % 10 == 0:
@@ -73,7 +74,6 @@ async def create_checkin(request: Request):
         return Response(status_code=204)
     finally:
         lock.release()
-
     
 if __name__ == '__main__':
     uvicorn.run(app, log_level="info", host="0.0.0.0", port=3000)

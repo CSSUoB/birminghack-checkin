@@ -1,6 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
 import math
-import printer
 
 font_bold = ImageFont.truetype("/usr/share/fonts/TTF/IosevkaSS08-Bold.ttc", 70, encoding="unic")
 font_norm = ImageFont.truetype("/usr/share/fonts/TTF/IosevkaSS08-Regular.ttc", 40, encoding="unic")
@@ -17,7 +16,7 @@ def name(name: str):
     draw = ImageDraw.Draw(img)
     draw.text((0, 0), name, font=font_bold, fill="black")
 
-    if font_bold.getlength(name) > MAX_WIDTH:
+    if txt_len > MAX_WIDTH:
         wpercent = (MAX_WIDTH / float(img.size[0]))
         hsize = int((float(img.size[1]) * float(wpercent)))
         img = img.resize((MAX_WIDTH, hsize), Image.Resampling.LANCZOS)
