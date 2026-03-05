@@ -1,5 +1,6 @@
 from fastapi import Request, Response, FastAPI
 from strictyaml import load
+from proxy import start_reverse_tunnel
 import threading
 import logging
 import hmac
@@ -30,6 +31,7 @@ def verify_message(message: bytes, signature: bytes):
 @app.post("/")
 async def create_checkin(request: Request):
     body = await request.body()
+    logger.debug(f"Received message: {body.decode('utf-8')}")
     signature = request.headers.get("Tito-Signature")
     if signature is None:
         logger.warning("Rejecting message with missing signature")
@@ -76,5 +78,8 @@ async def create_checkin(request: Request):
         lock.release()
     
 if __name__ == '__main__':
+    if 'ssh' in config:
+        threading.Thread(target=start_reverse_tunnel, args=(config,), daemon=True).start()
+
     uvicorn.run(app, log_level="info", host="0.0.0.0", port=3000)
 
