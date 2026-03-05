@@ -1,8 +1,8 @@
 from PIL import Image, ImageDraw, ImageFont
 import math
 
-font_bold = ImageFont.truetype("/usr/share/fonts/TTF/IosevkaSS08-Bold.ttc", 70, encoding="unic")
-font_norm = ImageFont.truetype("/usr/share/fonts/TTF/IosevkaSS08-Regular.ttc", 40, encoding="unic")
+font_bold = ImageFont.truetype("fonts/IosevkaSS08-Bold.ttc", 70, encoding="unic")
+font_norm = ImageFont.truetype("fonts/IosevkaSS08-Regular.ttc", 40, encoding="unic")
 
 MAX_WIDTH = 576
 
