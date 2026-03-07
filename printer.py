@@ -4,7 +4,7 @@ from typing import Optional, Union
 
 p = Dummy()
 
-def init_printer(maj: bytes, min: bytes):
+def init_printer(maj: int, min: int):
     global p
     p = Usb(maj, min, 0, profile="TM-P80")
 

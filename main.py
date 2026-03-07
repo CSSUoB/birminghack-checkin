@@ -17,7 +17,10 @@ with open("config.yaml", "r") as f:
 logger = logging.getLogger('uvicorn.error')
 lock = threading.Lock()
 
-printer.init_printer(bytes.fromhex(config['printer']['maj']), bytes.fromhex(config['printer']['min']))
+printer.init_printer(
+    int(config['printer']['maj'], 16), 
+    int(config['printer']['min'], 16)
+)
 
 app = FastAPI()
 
